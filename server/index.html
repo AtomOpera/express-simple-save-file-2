@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>Node Workshop</title>
+ </head>
+ <body>
+     <h1 style="color: blue;">
+        Express: HELLO WORLD
+     </h1>
+     <h1>
+      Users
+    </h1>
+    <h3 id="url"><b>URL: </b>Loading...</h3>
+    <h3 id="user"><b>User: </b>Loading...</h3>
+    <input
+        id="userInput"
+        name="user"
+        type="text"
+        maxlength="100"
+        value=""
+        placeholder="Add a movie"
+      />
+    <button id="submitButton">write</button>
+    <button id="readAgainButton">read again</button>
+    <script>
+
+      const user = document.getElementById('user');
+      const userInput = document.getElementById('userInput');
+      const submitButton = document.getElementById('submitButton');
+      const readAgainButton = document.getElementById('readAgainButton');
+      const url = window.location.href;
+      document.getElementById('url').innerHTML = "<b>URL: </b>" + url;
+
+      const userObj = { user: userInput.value};
+      
+      function read() {
+        fetch(url+"user")
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            user.innerHTML="<b>User: </b>" + data;
+          });
+      };
+      read();
+
+      function write() {
+        console.log(userInput.value);
+        fetch(url+"new", {
+          method: 'POST', // or 'PUT'
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify({
+            user: userInput.value,
+          })
+        }).catch((error) => {
+          console.error('Error:', error);
+        });
+      };
+      submitButton.addEventListener('click', write);
+      readAgainButton.addEventListener('click', read);
+  
+    </script>
+ </body>
+</html>
